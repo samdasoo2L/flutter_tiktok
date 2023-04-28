@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/constants/gaps.dart';
 import 'package:flutter_tiktok/constants/sizes.dart';
+import 'package:flutter_tiktok/features/authentication/email_screen.dart';
+
+import 'widgets/form_button.dart';
 
 class UsernameScreen extends StatefulWidget {
   const UsernameScreen({super.key});
@@ -22,6 +25,21 @@ class _UsernameScreenState extends State<UsernameScreen> {
         _username = _usernameController.text;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+
+  void _onNextTap() {
+    if (_username.isEmpty) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const EmailScreen(),
+      ),
+    );
   }
 
   @override
@@ -75,48 +93,14 @@ class _UsernameScreenState extends State<UsernameScreen> {
               cursorColor: Theme.of(context).primaryColor,
             ),
             Gaps.v16,
-            FormButton(disabled: _username.isEmpty),
+            GestureDetector(
+              onTap: _onNextTap,
+              // onTap: ()=>_onNextTap(context) 이럴필요가 없음 statefull이라서,
+              child: FormButton(
+                disabled: _username.isEmpty,
+              ),
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class FormButton extends StatelessWidget {
-  const FormButton({
-    super.key,
-    required this.disabled,
-  });
-
-  final bool disabled;
-
-  @override
-  Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: AnimatedContainer(
-        padding: const EdgeInsets.symmetric(
-          vertical: Sizes.size16,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            Sizes.size5,
-          ),
-          color:
-              disabled ? Colors.grey.shade400 : Theme.of(context).primaryColor,
-        ),
-        duration: const Duration(milliseconds: 300),
-        child: AnimatedDefaultTextStyle(
-          duration: const Duration(milliseconds: 300),
-          style: TextStyle(
-            color: disabled ? Colors.grey.shade400 : Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-          child: const Text(
-            "Next",
-            textAlign: TextAlign.center,
-          ),
         ),
       ),
     );
