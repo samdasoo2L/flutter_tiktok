@@ -69,7 +69,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
       onTap: _onScaffoldTap,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: const Text(
             "Sign up",
           ),
